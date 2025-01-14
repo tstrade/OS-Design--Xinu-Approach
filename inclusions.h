@@ -53,7 +53,7 @@
 #include "Chapter17/net.h"
 #include "Chapter17/ip.h"
 #include "Chapter17/udp.h"
-
+#include "Chapter17/dhcp.h"
 
 /* ----- Miscellaneous ----- */
 int panic(char *msg);

@@ -218,3 +218,157 @@ status ip_out(struct netpacket *pktptr)
   else
     return OK;
 }
+
+/* ------------------------------------------------------------------
+ *   ipcksum() - Compute the IP header checksum for a datagram
+ * ------------------------------------------------------------------
+ */
+uint16 ipcksum(struct netpacket *pktptr)
+{
+  uint16 *hptr;
+  int32 i;
+  uint16 word;
+  uint32 cksum;
+
+  hptr = (uint16 *)&pktptr->net_ipvh;
+
+  /* Sum 16-bit words in the packet */
+  cksum = 0;
+  for (i = 0; i < 10; i++) {
+    word = *hptr++;
+    cksum += (uint32)htons(word);
+  }
+
+  /* Add in carry, and take the ones-complement */
+  cksum += (cksum >> 16);
+  cksum = 0xFFFF & ~cksum;
+
+  /* Use all-1s for zero */
+  if (cksum == 0xFFFF)
+    cksum = 0;
+
+  return (uint16)(0xFFFF & cksum);
+}
+
+/* ------------------------------------------------------------------
+ *   ip_ntoh() - Convert an IP header fields to host byte order
+ * ------------------------------------------------------------------
+ */
+void ip_ntoh(struct netpacket *pktptr)
+{
+  pktptr->net_iplen = ntohs(pktptr->net_iplen);
+  pktptr->net_ipid = ntohs(pktptr->net_ipid);
+  pktptr->net_ipfrag = ntohs(pktptr->net_ipfrag);
+  pktptr->net_ipsrc = ntohl(pktptr->net_ipsrc);
+  pktptr->net_ipdst = ntohl(pktptr->net_ipdst);
+}
+
+/* ------------------------------------------------------------------
+ *   ip_hton() - Convert an IP header fields to network byte order
+ * ------------------------------------------------------------------
+ */
+void ip_hton(struct netpacket *pktptr)
+{
+  pktptr->net_iplen = htons(pktptr->net_iplen);
+  pktptr->net_ipid = htons(pktptr->net_ipid);
+  pktptr->net_ipfrag = htons(pktptr->net_ipfrag);
+  pktptr->net_ipsrc = htonl(pktptr->net_ipsrc);
+  pktptr->net_ipdst = htonl(pktptr->net_ipdst);
+}
+
+/* -------------------------------------------------------------------------
+ *   ipout() - Process that transmits IP packets from the IP output queue
+ * -------------------------------------------------------------------------
+ */
+process ipout()
+{
+  struct netpacket *pktptr;
+  struct iqentry *ipqptr;
+  uint32 destip;
+  uint32 nxthop;
+  int32 retval;
+
+  ipqptr = &ipoqueue;
+
+  while (1) {
+    /* Obtain next packet from the IP output queue */
+    wait(ipqptr->iqsem);
+    pktptr = ipqptr->iqbuf[ipqptr->iqhead++];
+    if (ipqptr->iqhead >= IP_OQSIZ)
+      ipqptr->iqhead = 0;
+
+    /* Fill in the MAC source address */
+    memcpy(pktptr->net_ethsrc, NetData.ethucast, ETH_ADDR_LEN);
+
+    /* Extract destination address from packet */
+    destip = pktptr->net_ipdst;
+
+    /* Sanity check: packets sent to ipout should *not* 
+     *    contain a broadcast address.
+     */
+    if ((destip == IP_BCAST) || (destip == NetData.ipbcast)) {
+      kprintf("ipout: broadcast address in packet\n\r");
+      freebuf((char *)pktptr);
+      continue;
+    }
+
+    /* Check whether destination is the local computer */
+    if (destip == NetData.ipucast) {
+      ip_local(pktptr);
+      continue;
+    }
+
+    /* Check whether destination is on the local net */
+    if ((destip & NetData.ipmask) == NetData.ipprefix) {
+      nxthop = destip;
+    } else {
+      nxthop = NetData.iprouter;
+    }
+
+    /* Dest. invalid or no default route */
+    if (nxthop == 0) {
+      freebuf((char *)pktptr);
+      continue;
+    }
+
+    /* Use ARP to resolve next-hop address */
+    retval = arp_resolve(nxthop, pktptr->net_ethdst);
+    if (retval != OK) {
+      freebuf((char *)pktptr);
+      continue;
+    }
+
+    /* Use ipout to convert byte order and send */
+    ip_out(pktptr);
+  }
+}
+
+/* --------------------------------------------------------------------------
+ *   ip_enqueue() - Deposit an outgoing IP datagram on the IP output queue
+ * --------------------------------------------------------------------------
+ */
+status ip_enqueue(struct netpacket *pktptr)
+{
+  intmask mask;
+  struct iqentry *iptr;
+  
+  mask = disable();
+  iptr = &ipoqueue;
+
+  /* Enqueue packet on network output queue */
+  iptr = &ipoqueue;
+  if (semcount(iptr->iqsem) >= IP_OQSIZ) {
+    kprintf("ip_enqueue: output queue overflow\n");
+    freebuf((char *)pktptr);
+    restore(mask);
+    return SYSERR;
+  }
+  iptr->iqbuf[iptr->iqtail++] = pktptr;
+  if (iptr->iqtail >= IP_OQSIZ)
+    iptr->iqtail = 0;
+
+  /* Signal that a packet is available */
+  signal(iptr->iqsem);
+  restore(mask);
+  return OK;
+}

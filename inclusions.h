@@ -47,10 +47,11 @@
 /* ----- Chapter 16 ----- */
 #include "Chapter16/quark_eth.h"
 #include "Chapter16/ether.h"
-#include "Chapter16/net.h"
 
 /* ----- Chapter 17 ----- */
-#include "arp.h"
+#include "Chapter17/arp.h"
+#include "Chapter17/net.h"
+#include "Chapter17/ip.h"
 
 
 /* ----- Miscellaneous ----- */

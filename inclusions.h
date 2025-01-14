@@ -49,6 +49,9 @@
 #include "Chapter16/ether.h"
 #include "Chapter16/net.h"
 
+/* ----- Chapter 17 ----- */
+#include "arp.h"
+
 
 /* ----- Miscellaneous ----- */
 int panic(char *msg);

@@ -58,14 +58,19 @@ extern	struct	netpacket *currpkt;	/* ptr to current input packet	*/
 extern	bpid32	netbufpool;		/* ID of net packet buffer pool	*/
 
 struct	network {
-	uint32	ipaddr;			/* IP address			*/
-	uint32	addrmask;		/* Subnet mask			*/
-	uint32	routeraddr;		/* Address of default router	*/
-	bool8	ipvalid;		/* Is IP address valid yet?	*/
-	byte	ethaddr[ETH_ADDR_LEN];	/* Ethernet address		*/
-  void    *ethbcast;
+  uint32 ipaddr;	        /* IP address			*/
+  uint32 addrmask;		/* Subnet mask			*/
+  uint32 routeraddr;		/* Address of default router	*/
+  bool8	 ipvalid;		/* Is IP address valid yet?	*/
+  byte   ethaddr[ETH_ADDR_LEN];	/* Ethernet address		*/
+  void   *ethbcast;
+  void   *ethucast;
+  uint32 ipbcast;
+  uint32 ipucast;
 };
 
 extern	struct	network NetData;	/* Local network interface	*/
+
+void eth_hton(struct netpacket *netptr);
 
 #endif

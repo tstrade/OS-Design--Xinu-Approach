@@ -59,10 +59,10 @@ struct dhcpmsg {
 };
 #pragma pack()
 
-char *dhcp_get_opt_val(const struct hdcpmsg *msg, uint32 dmg_size, uint8 option_key);
-void dhcp_bld_bootp_msg(struct dhcp *dmsg);
-int32 dhcp_bld_disc(struct dhcp *dmsg);
-int32 dhcp_bld_req(struct hdcpmsg *msg, const struct dhcp *dmsg_offer, uint32 dsmg_offer_size);
+char *dhcp_get_opt_val(const struct dhcpmsg *msg, uint32 dmsg_size, uint8 option_key);
+void dhcp_bld_bootp_msg(struct dhcpmsg *dmsg);
+int32 dhcp_bld_disc(struct dhcpmsg *dmsg);
+int32 dhcp_bld_req(struct dhcpmsg *dmsg, const struct dhcpmsg *dmsg_offer, uint32 dsmg_offer_size);
 uint32 getlocalip();
 
 #endif

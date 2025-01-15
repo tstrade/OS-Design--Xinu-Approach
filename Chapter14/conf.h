@@ -77,14 +77,6 @@ extern struct dentry devtab[];
 /* NAMESPACE prototypes */
 devcall naminit(did32 descrp);
 
-/* RDISK prototypes */
-devcall rdsread(did32 descrp, char *buffer, uint32 count);
-devcall rdswrite(did32 descrp, char *buffer, uint32 count);
-devcall rdsinit(did32 descrp);
-devcall rdsopen(did32 descrp, char *name, char *mode);
-devcall rdsclose(did32 descrp);
-interrupt rdsdispatch();
-
 /* RAM0 prototypes */
 devcall ramread(did32 descrp, char *buffer, uint32 count);
 devcall ramwrite(did32 descrp, char *buffer, uint32 count);

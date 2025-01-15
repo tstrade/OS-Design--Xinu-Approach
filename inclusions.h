@@ -56,6 +56,7 @@
 #include "Chapter17/dhcp.h"
 
 /* ----- Chapter 18 ----- */
+#include "Chapter18/rdisksys.h"
 
 /* ----- Chapter 19 ----- */
 
@@ -66,6 +67,12 @@
 /* ----- Chapter 22 ----- */
 
 /* ----- Chapter 23 ----- */  
+
+/* ----- Chapter 24 ----- */
+
+/* ----- Chapter 25 ----- */
+
+/* ----- Chapter 26 ----- */
 
 /* ----- Miscellaneous ----- */
 int panic(char *msg);

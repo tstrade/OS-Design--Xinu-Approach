@@ -37,6 +37,14 @@
 #define LF_DISK_DEV       SYSERR
 #endif
 
+/* Temporary until defined elsewhere */
+#define F_MODE_R 0
+#define F_MODE_W 1
+#define F_MODE_RW 2
+#define F_MODE_O 3
+#define F_MODE_N 4
+/*************************************/
+
 #define LF_MODE_R         F_MODE_R         /* Mode bit for "read"           */
 #define LF_MODE_W         F_MODE_W         /* Mode bit for "write"          */
 #define LF_MODE_RW        F_MODE_RW        /* Mode bit for "read/write"     */
@@ -127,6 +135,13 @@ extern struct lfdata Lf_data;
 extern struct lflcblk lfltab[];
 
 /* Control functions */
+
+/* Temporary until defined elsewhere */
+#define F_CTL_DEL   1
+#define F_CTL_TRUNC 2
+#define F_CTL_SIZE  3
+/*************************************/
+
 #define LF_CTL_DEL   F_CTL_DEL
 #define LF_CTL_TRUNC F_CTL_TRUNC
 #define LF_CTL_SIZE  F_CTL_SIZE
@@ -138,5 +153,6 @@ status lfibput(did32 diskdev, ibid32 inum, struct lfiblk *ibuff);
 ibid32 lfiballoc();
 dbid32 lfdballoc(struct lfdbfree *dbuff);
 status lfdbfree(did32 diskdev, dbid32 dnum);
+devcall lfsopen(struct dentry *devptr, char *name, char *mode);
 
 #endif

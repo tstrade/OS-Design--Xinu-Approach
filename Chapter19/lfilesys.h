@@ -157,5 +157,10 @@ devcall lfsopen(struct dentry *devptr, char *name, char *mode);
 int32 lfgetmode(char *mode);
 devcall lflclose(struct dentry *devptr);
 void lfflush(struct lflcblk *lfptr);
+devcall lflwrite(struct dentry *devptr, char *buff, int32 count);
+devcall lflread(struct dentry *devptr, char *buff, int32 count);
+devcall lflgetc(struct dentry *devptr);
+devcall lflputc(struct dentry *devptr, char ch);
+status lfsetup(struct lflcblk *lfptr);
 
 #endif

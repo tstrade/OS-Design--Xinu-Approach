@@ -34,7 +34,7 @@
 /* disk has a block size of 512 bytes)                                                    */
 
 #ifndef LF_DISK_DEV
-#define LF_DISK_DEV       SYSERR
+#define LF_DISK_DEV SYSERR
 #endif
 
 /* Temporary until defined elsewhere */
@@ -45,33 +45,34 @@
 #define F_MODE_N 4
 /*************************************/
 
-#define LF_MODE_R         F_MODE_R         /* Mode bit for "read"           */
-#define LF_MODE_W         F_MODE_W         /* Mode bit for "write"          */
-#define LF_MODE_RW        F_MODE_RW        /* Mode bit for "read/write"     */
-#define LF_MODE_O         F_MODE_O         /* Mode bit for "old"            */
-#define LF_MODE_N         F_MODE_N         /* Mode bit for "new"            */
+#define LF_MODE_R F_MODE_R   /* Mode bit for "read"           */
+#define LF_MODE_W F_MODE_W   /* Mode bit for "write"          */
+#define LF_MODE_RW F_MODE_RW /* Mode bit for "read/write"     */
+#define LF_MODE_O F_MODE_O   /* Mode bit for "old"            */
+#define LF_MODE_N F_MODE_N   /* Mode bit for "new"            */
 
-#define LF_BLKSIZ         512              /* Block size for local file sys  */
-#define LF_NAME_LEN       16               /* Length of file name plus nil   */
-#define LF_NUM_DIR_ENT    20               /* Number of entries in directory */
+#define LF_BLKSIZ 512     /* Block size for local file sys  */
+#define LF_NAME_LEN 16    /* Length of file name plus nil   */
+#define LF_NUM_DIR_ENT 20 /* Number of entries in directory */
 
-#define LF_FREE           0                /* Slave device is available      */
-#define LF_USED           1                /* Slave device is in use         */
+#define LF_FREE 0 /* Slave device is available      */
+#define LF_USED 1 /* Slave device is in use         */
 
-#define LF_INULL          (ibid32) -1      /* Index block null pointer       */
-#define LF_DNULL          (dbid32) -1      /* Data block null pointer        */
-#define LF_IBLEN          16               /* Data blocks ptrs per i-block   */
-#define LF_IDATA          8192             /* Bytes of data indexed by i-b   */
+#define LF_INULL (ibid32) - 1 /* Index block null pointer       */
+#define LF_DNULL (dbid32) - 1 /* Data block null pointer        */
+#define LF_IBLEN 16           /* Data blocks ptrs per i-block   */
+#define LF_IDATA 8192         /* Bytes of data indexed by i-b   */
 
-#define LF_IMASK          0x00001FFF       /* Mask for index block number    */
-#define LF_DMASK          0x00001FFF       /* Mask for data block number     */
+#define LF_IMASK 0x00001FFF /* Mask for index block number    */
+#define LF_DMASK 0x00001FFF /* Mask for data block number     */
 
-#define LF_AREA_IB       1                 /* First sector of i-blocks       */
-#define LF_AREA_DIR      0                 /* First sector of directory      */
+#define LF_AREA_IB 1  /* First sector of i-blocks       */
+#define LF_AREA_DIR 0 /* First sector of directory      */
 
-#define DFILL            0                 /* Fill value for data blocks     */
+#define DFILL 0 /* Fill value for data blocks     */
 
-struct lfiblk {
+struct lfiblk
+{
     ibid32 ib_next;
     uint32 ib_offset;
     dbid32 ib_dba[LF_IBLEN];
@@ -80,55 +81,60 @@ struct lfiblk {
 /* Conversion functions below assume 7 index blocks per disk block */
 
 /* Conversion between index block number and disk sector number */
-#define ib2sect(ib)      (((ib)/7) + LF_AREA_IB)
+#define ib2sect(ib) (((ib) / 7) + LF_AREA_IB)
 
 /* Conversion between index block number and relative offset within disk sector */
-#define ib2disp(ib)      (((ib)%7) * sizeof(struct lfiblk))
+#define ib2disp(ib) (((ib) % 7) * sizeof(struct lfiblk))
 
-struct ldentry {
+struct ldentry
+{
     uint32 ld_size;
     ibid32 ld_ilist;
     char ld_name[LF_NAME_LEN];
 };
 
-struct lfdbfree {
+struct lfdbfree
+{
     dbid32 lf_nextdb;
     char lf_unused[LF_BLKSIZ - sizeof(dbid32)];
 };
 
 #pragma pack(2)
-struct lfdir {
+struct lfdir
+{
     dbid32 lfd_dfree;
     ibid32 lfd_ifree;
-    int32  lfd_nfiles;
+    int32 lfd_nfiles;
     struct ldentry lfd_files[LF_NUM_DIR_ENT];
-    char   padding[20];
+    char padding[20];
 };
 #pragma pack()
 
-struct lfdata {
-    did32  lf_dskdev;
-    sid32  lf_mutex;
+struct lfdata
+{
+    did32 lf_dskdev;
+    sid32 lf_mutex;
     struct lfdir lf_dir;
-    bool8  lf_dirpresent;
-    bool8  lf_dirdirty;
+    bool8 lf_dirpresent;
+    bool8 lf_dirdirty;
 };
 
-struct lflcblk {
-    byte    lfstate;
-    did32   lfdev;
-    sid32   lfmutex;
-    struct  ldentry *lfdirptr;
-    int32   lfmode;
-    uint32  lfpos;
-    char    lfname[LF_NAME_LEN];
-    ibid32  lfinum;
-    struct  lfiblk lfiblock;
-    dbid32  lfdnum;
-    char    lfdblock[LF_BLKSIZ];
-    char    *lfbyte;
-    bool8   lfibdirty;
-    bool8   lfdbdirty;
+struct lflcblk
+{
+    byte lfstate;
+    did32 lfdev;
+    sid32 lfmutex;
+    struct ldentry *lfdirptr;
+    int32 lfmode;
+    uint32 lfpos;
+    char lfname[LF_NAME_LEN];
+    ibid32 lfinum;
+    struct lfiblk lfiblock;
+    dbid32 lfdnum;
+    char lfdblock[LF_BLKSIZ];
+    char *lfbyte;
+    bool8 lfibdirty;
+    bool8 lfdbdirty;
 };
 
 extern struct lfdata Lf_data;
@@ -137,14 +143,14 @@ extern struct lflcblk lfltab[];
 /* Control functions */
 
 /* Temporary until defined elsewhere */
-#define F_CTL_DEL   1
+#define F_CTL_DEL 1
 #define F_CTL_TRUNC 2
-#define F_CTL_SIZE  3
+#define F_CTL_SIZE 3
 /*************************************/
 
-#define LF_CTL_DEL   F_CTL_DEL
+#define LF_CTL_DEL F_CTL_DEL
 #define LF_CTL_TRUNC F_CTL_TRUNC
-#define LF_CTL_SIZE  F_CTL_SIZE
+#define LF_CTL_SIZE F_CTL_SIZE
 
 /* Prototypes */
 void lfibclear(struct lfiblk *ibptr, int32 offset);
@@ -162,5 +168,9 @@ devcall lflread(struct dentry *devptr, char *buff, int32 count);
 devcall lflgetc(struct dentry *devptr);
 devcall lflputc(struct dentry *devptr, char ch);
 status lfsetup(struct lflcblk *lfptr);
+devcall lfsinit(struct dentry *devptr);
+devcall lflinit(struct dentry *devptr);
+status lftruncate(struct lflcblk *lfptr);
+status lfscreate(did32 disk, ibid32 lfiblks, uint32 dsiz);
 
 #endif

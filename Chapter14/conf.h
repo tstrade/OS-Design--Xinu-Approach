@@ -98,18 +98,4 @@ devcall rflwrite(did32 descrp, char *buffer, uint32 count);
 devcall rflclose(did32 descrp);
 devcall rflinit(did32 descrp);
 
-/* LFILESYS prototypes */
-devcall lfsinit(did32 descrp);
-devcall lfsopen(did32 descrp, char *name, char *mode);
-
-/* LFILE# prototypes */
-devcall lflread(did32 descrp, char *buffer, uint32 count);
-devcall lflcontrol(did32, int64 func, int64 arg1, int64 arg2);
-devcall lflgetc(did32 descrp);
-devcall lflputc(did32 descrp, char ch);
-devcall lflseek(did32 descrp, uint32 pos);
-devcall lflwrite(did32 descrp, char *buffer, uint32 count);
-devcall lflclose(did32 descrp);
-devcall lflinit(did32 descrp);
-
 #endif

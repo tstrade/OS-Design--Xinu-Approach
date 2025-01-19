@@ -154,5 +154,8 @@ ibid32 lfiballoc();
 dbid32 lfdballoc(struct lfdbfree *dbuff);
 status lfdbfree(did32 diskdev, dbid32 dnum);
 devcall lfsopen(struct dentry *devptr, char *name, char *mode);
+int32 lfgetmode(char *mode);
+devcall lflclose(struct dentry *devptr);
+void lfflush(struct lflcblk *lfptr);
 
 #endif

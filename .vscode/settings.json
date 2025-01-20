@@ -60,6 +60,7 @@
     "inclusions.h": "c",
     "name.h": "c",
     "dhcp.h": "c",
-    "rfilesys.h": "c"
+    "rfilesys.h": "c",
+    "lfilesys.h": "c"
   }
 }

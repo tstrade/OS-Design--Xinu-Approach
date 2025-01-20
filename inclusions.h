@@ -75,9 +75,10 @@
 #include "Chapter23/mark.h"
 
 /* ----- Chapter 24 ----- */
-#include "Chapter24/panic.c"
+void panic(char *msg);
 
 /* ----- Chapter 25 ----- */
+#include "Chapter25/config.h"
 
 /* ----- Chapter 26 ----- */
 

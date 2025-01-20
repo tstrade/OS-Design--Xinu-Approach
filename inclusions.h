@@ -75,14 +75,13 @@
 #include "Chapter23/mark.h"
 
 /* ----- Chapter 24 ----- */
+#include "Chapter24/panic.c"
 
 /* ----- Chapter 25 ----- */
 
 /* ----- Chapter 26 ----- */
 
 /* ----- Miscellaneous ----- */
-int panic(char *msg);
-
 syscall yield()
 {
   intmask mask;

@@ -12,4 +12,7 @@ typedef int32 memmark[1];
 
 #define notmarked(L) (L[0] < 0 || L[0] >= nmarks || marks[L[0]] != L)
 
+void markinit();
+status mark(int32 *loc);
+
 #endif

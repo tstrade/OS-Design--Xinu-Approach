@@ -81,6 +81,7 @@ void panic(char *msg);
 #include "Chapter25/config.h"
 
 /* ----- Chapter 26 ----- */
+#include "Chapter26/shell.h"
 
 /* ----- Miscellaneous ----- */
 syscall yield()

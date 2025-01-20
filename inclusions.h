@@ -69,8 +69,10 @@
 #include "Chapter21/name.h"
 
 /* ----- Chapter 22 ----- */
+#include "Chapter22/armv7a.h"
 
 /* ----- Chapter 23 ----- */
+#include "Chapter23/mark.h"
 
 /* ----- Chapter 24 ----- */
 

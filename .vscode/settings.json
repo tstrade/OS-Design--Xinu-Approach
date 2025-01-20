@@ -59,6 +59,7 @@
   "files.associations": {
     "inclusions.h": "c",
     "name.h": "c",
-    "dhcp.h": "c"
+    "dhcp.h": "c",
+    "rfilesys.h": "c"
   }
 }

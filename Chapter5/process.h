@@ -41,6 +41,7 @@ struct procent {
   umsg32 prmsg;
   bool8 prhasmsg;
   int16 prdesc[NDESC];
+  qid16 th_readylist;
 };
 
 #define STACKMAGIC 0x0A0AAAA9

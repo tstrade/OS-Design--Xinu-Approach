@@ -121,7 +121,7 @@ void ttyhandle_in(struct ttycblk *typtr, struct uart_csreg *csrptr)
      * and ignore otherwise
      */
     if (ch == typtr->tyeofch && typtr->tyeof) {
-      if (typtr->tyieho)
+      if (typtr->tyiecho)
         echoch(ch, typtr, csrptr);
 
       if (typtr->tyicursor != 0)

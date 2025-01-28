@@ -83,6 +83,9 @@ void panic(char *msg);
 /* ----- Chapter 26 ----- */
 #include "Chapter26/shell.h"
 
+/* ----- Self-Implemenations ----- */
+#include "Threads/thread.h"
+
 /* ----- Miscellaneous ----- */
 syscall yield()
 {

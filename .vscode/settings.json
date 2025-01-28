@@ -61,6 +61,10 @@
     "name.h": "c",
     "dhcp.h": "c",
     "rfilesys.h": "c",
-    "lfilesys.h": "c"
+    "lfilesys.h": "c",
+    "rdisksys.h": "c",
+    "compare": "cpp",
+    "type_traits": "cpp",
+    "utility": "cpp"
   }
 }

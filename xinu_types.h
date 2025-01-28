@@ -53,7 +53,7 @@ typedef int32   thread;         /* thread declaration                   */
 typedef void    exchandler;     /* exception procedure                  */
 typedef int32   message;        /* message passing content              */
 
-typedef int tid_typ;            /* thread ID type                       */
+typedef int32 tid_typ;            /* thread ID type                       */
 
 #define local	static		/* Local procedure or variable declar.	*/
 
